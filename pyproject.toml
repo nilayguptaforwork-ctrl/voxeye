@@ -1,0 +1,85 @@
+[project]
+name = "voxeye"
+version = "0.1.0"
+description = "OpenTelemetry observability for LiveKit Agents — ships transcripts, tool calls, prompts, and spans to a self-hosted ingest service in three lines."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [{ name = "Manvendra Singh" }]
+keywords = ["livekit", "opentelemetry", "observability", "voice", "agents"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: AsyncIO",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: System :: Monitoring",
+    "Typing :: Typed",
+]
+dependencies = [
+    "opentelemetry-sdk>=1.39,<1.42",
+    "opentelemetry-exporter-otlp-proto-http>=1.39,<1.42",
+    # Pin to the 1.5.x line this SDK was verified against (telemetry internals + the
+    # pooled-worker reset rely on its tracer singleton). Older 1.3.x imports a since-
+    # removed OTel symbol (`LogData`); newer majors may move the telemetry API.
+    "livekit-agents>=1.5,<2",
+]
+
+[project.urls]
+Homepage = "https://github.com/nilayguptaforwork-ctrl/voxeye"
+Repository = "https://github.com/nilayguptaforwork-ctrl/voxeye"
+Documentation = "https://github.com/nilayguptaforwork-ctrl/voxeye#readme"
+Issues = "https://github.com/nilayguptaforwork-ctrl/voxeye/issues"
+Changelog = "https://github.com/nilayguptaforwork-ctrl/voxeye/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.25",
+    "responses>=0.25",
+    "mypy>=1.13",
+    "ruff>=0.7",
+]
+# Runnable demo agents under examples/ — `uv sync --extra examples`.
+# Stack: Gemini LLM + Deepgram STT + Cartesia TTS + Silero VAD (all key-based, no GCP).
+examples = [
+    "livekit-plugins-google",
+    "livekit-plugins-deepgram",
+    "livekit-plugins-cartesia",
+    "livekit-plugins-silero",
+    "python-dotenv>=1.0",
+    "requests>=2.32",  # end_to_end_smoke.py
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/voxeye"]
+
+# Keep the published sdist lean: just the package source + README + LICENSE
+# (pyproject.toml and PKG-INFO are added automatically). No tests/examples/lockfile.
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/README.md", "/LICENSE"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
