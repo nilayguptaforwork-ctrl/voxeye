@@ -81,14 +81,15 @@ uv run ruff check src tests && uv run mypy src
 
 ## Build & publish
 
+`voxeye` is **published on PyPI** (`pip install voxeye`). Releases are automated via GitHub
+Actions **trusted publishing** (OIDC, no API tokens) in `.github/workflows/publish.yml`,
+which runs on a published GitHub Release — the PyPI trusted publisher and `pypi` environment
+are already configured. To cut a new version (bump `pyproject.toml` first — the version comes
+from there, not the tag) and the full runbook, see [`PUBLISHING.md`](./PUBLISHING.md). To
+build/validate locally:
+
 ```bash
 uv build                       # → dist/voxeye-<version>-py3-none-any.whl + .tar.gz
 uvx twine check dist/*         # validate metadata + README rendering
 pip install dist/voxeye-*.whl  # try it in a clean env
 ```
-
-Publishing to PyPI is automated via GitHub Actions **trusted publishing** (OIDC, no API
-tokens) in `.github/workflows/publish.yml` — it runs on a published GitHub Release. Before
-the first release: reserve the `voxeye` name on PyPI and add this repo as a
-[trusted publisher](https://docs.pypi.org/trusted-publishers/). Until then the workflow is
-inert. To publish manually instead: `uvx twine upload dist/*`.

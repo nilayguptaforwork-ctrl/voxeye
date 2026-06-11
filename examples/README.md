@@ -64,4 +64,3 @@ Everything fails open: if `VOXEYE_ENDPOINT` is wrong or retina is down, the agen
 runs — you just won't see data. Run with `debug=True` (already set) to log attach issues.
 If the agent runs somewhere retina can't reach (e.g. LiveKit Cloud), expose retina with a
 tunnel (`ngrok http 8000`) and set `VOXEYE_ENDPOINT` to that URL.
-"""

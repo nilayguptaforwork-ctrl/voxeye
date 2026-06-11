@@ -62,7 +62,7 @@ Everything below needs no PyPI account except the upload step.
 cd voxeye
 rm -rf dist && uv build                # build wheel + sdist
 uvx twine check dist/*                 # metadata valid + README renders
-tar tzf dist/voxeye-*.tar.gz           # sanity: src + README + LICENSE only, no secrets
+tar tzf dist/voxeye-*.tar.gz           # sanity: src + README + LICENSE (+ pyproject/PKG-INFO), no tests/examples/secrets
 
 # clean-install smoke test (no creds):
 uv venv /tmp/voxeye-test

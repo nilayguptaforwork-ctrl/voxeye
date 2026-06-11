@@ -1,10 +1,11 @@
 name: publish
 
 # Publishes voxeye via PyPI Trusted Publishing (OIDC — no API tokens/secrets):
-#   • a published GitHub Release  → PyPI
+#   • a published GitHub Release  → PyPI  (the live path — 0.1.0 shipped this way)
 #   • manual run (workflow_dispatch) → TestPyPI (dry-run) or PyPI
-# Inert until you reserve the project on the target index and register this repo as a
-# trusted publisher: https://docs.pypi.org/trusted-publishers/
+# PyPI trusted publisher + the `pypi` environment are configured. TestPyPI (`testpypi`
+# environment) is optional — set it up to use the dry-run path.
+# Trusted publishing docs: https://docs.pypi.org/trusted-publishers/
 on:
   release:
     types: [published]
